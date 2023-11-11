@@ -130,3 +130,51 @@ html {
     }
   }
   
+  @import url('https://fonts.googleapis.com/css?family=Anton');
+
+$text-color: #517d1d;
+$background: linear-gradient(45deg, darken(#517d1d, 11%) 20%, darken(#517d1d, 10%) 0%, darken(#517d1d, 11%) 80%, darken(#517d1d, 10%) 0%);
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: $background;
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+  flex-direction: column;
+}
+
+.comment {
+  text-align: center;
+  color: rgba(255, 255, 255, .2);
+}
+
+.text {
+  font-size: 10em;
+  transition: 1s ease-in-out;
+  color: $text-color;
+  font-family: 'Anton', sans-serif;
+
+  &:hover {
+    transform: perspective(400px) rotateX(20deg) rotateY(-15deg);
+    $value: ();
+    @for $i from 1 through 40 {
+      $theShadow: #{$i}px #{$i}px rgba(darken($text-color, 15%), (1 - ($i * .04)));
+      $value: append($value, $theShadow, comma);
+    }
+    text-shadow: $value;
+  }
+}
+
