@@ -27,3 +27,18 @@ var span = document.getElementsByClassName("close")[0];
 span.onclick = function() { 
   modal.style.display = "none";
 }
+function openModal(modalId) {
+    var modal = document.getElementById(modalId);
+    var img = document.getElementById(modalId.replace('modal', 'img'));
+    var modalImg = modal.getElementsByClassName("modal-content")[0];
+    var captionText = modal.getElementById("caption");
+
+    modal.style.display = "block";
+    modalImg.src = img.src;
+    captionText.innerHTML = img.alt;
+}
+
+function closeModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.style.display = "none";
+}

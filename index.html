@@ -10,6 +10,14 @@
         <style>
             body {font-family: "Lato", sans-serif}
             .mySlides {display: none}
+/* Style the Image Used to Trigger the Modal */
+img {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+img:hover {opacity: 0.7;}
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -22,49 +30,65 @@
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 }
 
-/* Modal Content */
+/* Modal Content (Image) */
 .modal-content {
-    position: relative;
-    background-color: #fefefe;
     margin: auto;
-    padding: 0;
-    border: 1px solid #888;
+    display: block;
     width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s
+    max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
 }
 
 /* Add Animation */
-@-webkit-keyframes animatetop {
-    from {top: -300px; opacity: 0} 
-    to {top: 0; opacity: 1}
+.modal-content, #caption {  
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
 }
 
-@keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 0; opacity: 1}
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
 }
 
 /* The Close Button */
 .close {
-    color: white;
-    float: right;
-    font-size: 28px;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
     font-weight: bold;
+    transition: 0.3s;
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: #bbb;
     text-decoration: none;
     cursor: pointer;
 }
+
 
         </style>
     </head>
@@ -108,12 +132,29 @@
             </div>
         </div>
         
-        <img id="myImg" src="Sales Dashboard.png" alt="Volunteer Dashboard" style="width:100%;max-width:300px">
-        <div id="myModal" class="modal">
-            <span class="close">&times;</span>
-            <img class="modal-content" id="img01">
-            <div id="caption"></div>
-          </div>
+        <!-- Portfolio Section -->
+<div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="portfolio">
+    <h2 class="w3-wide">Portfolio</h2>
+    <div class="w3-row">
+        <div class="w3-col m6 w3-margin-bottom">
+            <img src="your-image-url.jpg" alt="Project 1" style="width:100%" onclick="openModal('modal1')">
+            <div id="modal1" class="modal">
+                <span class="close" onclick="closeModal('modal1')">&times;</span>
+                <img class="modal-content" id="img1">
+                <div id="caption"></div>
+            </div>
+        </div>
+        <div class="w3-col m6 w3-margin-bottom">
+            <img src="your-second-image-url.jpg" alt="Project 2" style="width:100%" onclick="openModal('modal2')">
+            <div id="modal2" class="modal">
+                <span class="close" onclick="closeModal('modal2')">&times;</span>
+                <img class="modal-content" id="img2">
+                <div id="caption"></div>
+            </div>
+        </div>
+        <!-- More images can be added here -->
+    </div>
+</div>
 
         <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="portfolio">
             <h2 class="w3-wide">Portfolio</h2>
