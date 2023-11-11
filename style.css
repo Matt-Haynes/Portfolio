@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
   padding-top: 60px; /* Adjust based on the header height */
@@ -31,9 +31,10 @@ body {
 }
 
 .navbar a:hover {
-  background-color: #ddd;
-  color: black;
+  background-color: #007bff; /* Change as per your color scheme */
+  color: white;
 }
+
 
 nav ul {
   list-style: none;
