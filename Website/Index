@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matt Haynes - Data Analyst Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Matt Haynes</h1>
+        <p>07885381307 | <a href="mailto:matthaynes.career@outlook.com">matthaynes.career@outlook.com</a></p>
+    </header>
+
+    <nav>
+        <!-- Navigation Links (if needed) -->
+    </nav>
+
+    <section id="profile">
+        <h2>Profile</h2>
+        <p>Results-driven professional with a diverse skill set in HTML, CSS, JavaScript, Python, and Microsoft Azure...</p>
+    </section>
+
+    <section id="experience">
+        <h2>Experience</h2>
+        <!-- Repeat for each job experience -->
+        <article>
+            <h3>Business Intelligence Engineer, GovData Ltd, Warrington</h3>
+            <p>May 2022 - Present</p>
+            <p>I was appointed to the role of BI Engineer after completing a Software Development Bootcamp...</p>
+            <!-- List of accomplishments -->
+            <ul>
+                <li>Identify data and analytics technology solutions...</li>
+                <!-- More items -->
+            </ul>
+        </article>
+        <!-- More job experiences -->
+    </section>
+
+    <section id="qualifications">
+        <h2>Qualifications</h2>
+        <ul>
+            <li>Microsoft DP-900</li>
+            <!-- More qualifications -->
+        </ul>
+    </section>
+
+    <section id="skills">
+        <h2>Skills</h2>
+        <p>Communication and Stakeholder Management, Continuous Improvement...</p>
+    </section>
+
+    <section id="education">
+        <h2>Education</h2>
+        <p>BTeC National Diploma, Medical Science, Knowsley Community College...</p>
+        <!-- More education entries -->
+    </section>
+
+    <footer>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/matt-haynes/">https://www.linkedin.com/in/matt-haynes/</a></p>
+        <p>Credly: <a href="https://www.credly.com/badges/2a20aa16-699e-40cc-b8f7-d97465ced804/public_url">https://www.credly.com/...</a></p>
+    </footer>
+</body>
+</html>
