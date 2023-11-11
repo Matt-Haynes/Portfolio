@@ -146,18 +146,7 @@ HTML{
       left: 50%;
       transform: translate(-50%,-50%);
     }
-    .red{
-      filter: url(#alphaRed);
-      mix-blend-mode: lighten;
-    }
-    .green{
-      filter: url(#alphaGreen);
-      mix-blend-mode: lighten;
-    }
-    .blue{
-      filter: url(#alphaBlue);
-      mix-blend-mode: lighten;
-    }
+
     .text{
       display: block;
       color: #fff;
@@ -172,6 +161,9 @@ HTML{
       span{
         position: relative;
         z-index: 1;
+        opacity: 1;
+        &::before{
+          transform: scale(1,1) translate(-50%,-50%);
       }
       &::before{
         content: "";
@@ -211,11 +203,6 @@ HTML{
         animation-timing-function: linear;
         animation-iteration-count: infinite;
       }
-      .text{
-        opacity: 1;
-        &::before{
-          transform: scale(1,1) translate(-50%,-50%);
-        }
       }
     }
   }
