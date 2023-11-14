@@ -2966,7 +2966,6 @@ input, select, textarea {
 			-ms-flex-direction: row;
 			flex-direction: row;
 			background-color: #2e3450;
-			size: 200px;
 		}
 
 			.spotlights > section > .image {
@@ -3408,7 +3407,7 @@ input, select, textarea {
 		-webkit-align-items: center;
 		-ms-align-items: center;
 		align-items: center;
-		background-image: url("../../images/banner.jpg");
+		background-image: url('images\Banner_img.png');
 		display: -moz-flex;
 		display: -webkit-flex;
 		display: -ms-flex;
@@ -3442,8 +3441,11 @@ input, select, textarea {
 			content: '';
 			display: block;
 			height: 100%;
+			top: 0;
 			left: 0;
-			opacity: 0.85;
+			right: 0;
+			bottom: 0;
+			opacity: 0.1;
 			position: absolute;
 			top: 0;
 			width: 100%;
