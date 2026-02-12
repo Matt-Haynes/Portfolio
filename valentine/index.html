@@ -206,40 +206,31 @@
     }
 
 
+    // Predefined safe positions for the No button (tested to work on mobile)
+    const safePositions = [
+      { x: 20, y: 20 },
+      { x: 20, y: 60 },
+      { x: 60, y: 20 },
+      { x: 60, y: 60 },
+      { x: 20, y: 100 },
+      { x: 100, y: 20 },
+      { x: 100, y: 100 },
+      { x: 40, y: 40 },
+      { x: 80, y: 80 },
+      { x: 30, y: 90 }
+    ];
+
+    let positionIndex = 0;
+
     function moveNoSomewhereElse() {
       ensureNoAbsolutePositioning();
 
-      // Large safety margin to ensure button stays visible
-      const safetyMargin = 80;
-      
-      // Fixed button dimensions based on CSS
-      const btnWidth = 130;
-      const btnHeight = 50;
+      // Use predefined safe positions that work on mobile
+      const position = safePositions[positionIndex % safePositions.length];
+      positionIndex++;
 
-      // Get actual viewport dimensions
-      const maxScreenX = window.innerWidth;
-      const maxScreenY = window.innerHeight;
-
-      // Calculate bounds with safety margin
-      const minX = safetyMargin;
-      const maxX = maxScreenX - btnWidth - safetyMargin;
-      const minY = safetyMargin;
-      const maxY = maxScreenY - btnHeight - safetyMargin;
-
-      // Ensure valid range (if button doesn't fit, center it)
-      const validMaxX = Math.max(minX, maxX);
-      const validMaxY = Math.max(minY, maxY);
-
-      // Generate random position within safe bounds
-      const x = Math.random() * (validMaxX - minX) + minX;
-      const y = Math.random() * (validMaxY - minY) + minY;
-
-      // Apply position with final clamp as failsafe
-      const finalX = clamp(x, minX, validMaxX);
-      const finalY = clamp(y, minY, validMaxY);
-
-      noBtn.style.left = finalX + "px";
-      noBtn.style.top = finalY + "px";
+      noBtn.style.left = position.x + "px";
+      noBtn.style.top = position.y + "px";
 
       // Grow the Yes button
       yesScale = Math.min(maxScale, yesScale + scaleStep);
