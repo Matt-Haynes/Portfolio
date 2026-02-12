@@ -1,0 +1,32 @@
+name: Send Valentine SMS
+
+on:
+  schedule:
+    # Runs at 09:00 UTC on Feb 14 every year
+    - cron: '0 9 14 2 *'
+  workflow_dispatch: {}
+
+jobs:
+  send_sms:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./valentine
+
+      - name: Send SMS via Twilio
+        env:
+          TWILIO_SID: ${{ secrets.TWILIO_SID }}
+          TWILIO_TOKEN: ${{ secrets.TWILIO_TOKEN }}
+          TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
+          TO_PHONE: ${{ secrets.TO_PHONE }}
+          VALENTINE_LINK: ${{ secrets.VALENTINE_LINK }}
+        run: node scripts/sendSms.js
+        working-directory: ./valentine

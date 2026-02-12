@@ -1,0 +1,11 @@
+{
+  "name": "valentine-sms",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "send": "node scripts/sendSms.js"
+  },
+  "dependencies": {
+    "twilio": "^4.1.0"
+  }
+}
