@@ -152,8 +152,14 @@
     <div id="yesScreen" class="hidden">
       <h1>Yessss! 🥰</h1>
       <div class="message" id="finalMessage">
-        <!-- Placeholder: we’ll write this properly later -->
-        You are my best friend, my rock, and the love of my life. I can’t wait to make more memories together and see where our journey takes us. Thank you for being you, and for being mine.  love you more than words. Happy Valentine’s Day ❤️ 
+        You are my best friend, my rock, and the love of my life. I can't wait to make more memories together and see where our journey takes us. Thank you for being you, and for being mine.<br><br>I love you more than words. Happy Valentine's Day ❤️
+      </div>
+    </div>
+
+    <div id="noScreen" class="hidden">
+      <h1>You Got Me! 😄</h1>
+      <div class="message" id="noMessage">
+        I knew you'd try clicking No! But there's no escaping this one. You're stuck with me now. Let's celebrate Valentine's Day together! ❤️
       </div>
     </div>
   </div>
@@ -162,13 +168,16 @@
     // ---- Config: replace these file names with your images ----
     const BG_START = "us.jpg";       // your normal photo
     const BG_WEDDING = "wedding.jpg"; // wedding photo
+    const BG_NO = "funny.jpg";       // funny photo for No screen
 
     // ---- Elements ----
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const questionScreen = document.getElementById("questionScreen");
     const yesScreen = document.getElementById("yesScreen");
+    const noScreen = document.getElementById("noScreen");
     const finalMessage = document.getElementById("finalMessage");
+    const noMessage = document.getElementById("noMessage");
 
     // ---- State ----
     let yesScale = 1;
@@ -285,9 +294,11 @@
       originalMove();
       
       if (noDodgeCount >= maxDodges) {
-        // After 10 dodges, disable the No button and show a message
+        // After 10 dodges, show the No screen
+        document.body.style.backgroundImage = `url("${BG_NO}")`;
+        questionScreen.classList.add("hidden");
+        noScreen.classList.remove("hidden");
         noBtn.style.pointerEvents = "none";
-        noBtn.textContent = "You got me! 😄";
       }
     };
   </script>
