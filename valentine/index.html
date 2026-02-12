@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Valentine?</title>
+  <style>
+    :root{
+      --card-bg: rgba(0,0,0,0.55);
+      --text: #fff;
+      --shadow: 0 18px 50px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; overflow: hidden; }
+
+    /* Background */
+    body{
+      background: url("us.jpg") center/cover no-repeat fixed;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      color: var(--text);
+      overflow: hidden; /* helps when the button jumps around */
+    }
+
+    /* Soft overlay for readability */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+      pointer-events: none;
+    }
+
+    /* Card */
+    .card{
+      position: relative;
+      z-index: 1;
+      width: min(520px, 92vw);
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    h1{
+      margin: 0 0 12px;
+      font-size: clamp(22px, 4.6vw, 34px);
+      line-height: 1.1;
+    }
+
+    p{
+      margin: 0 0 18px;
+      font-size: clamp(14px, 3.6vw, 18px);
+      opacity: 0.95;
+    }
+
+    .buttons{
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-bottom: 6px;
+    }
+
+    button{
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 18px;
+      font-weight: 650;
+      cursor: pointer;
+      min-width: 130px;
+      transition: transform 160ms ease, filter 160ms ease;
+      touch-action: manipulation; /* improves tap responsiveness */
+      user-select: none;
+    }
+
+    #yesBtn{
+      transform: scale(1);
+      background: #2ecc71;
+      color: #0b2c16;
+      z-index: 1;
+    }
+    #yesBtn:active{ transform: scale(var(--yes-scale, 1)) translateY(1px); filter: brightness(0.95); }
+
+    /* "No" button lives as an absolute element when it starts moving */
+    #noBtn{
+      background: #ff5a5f;
+      color: #3a0b0b;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hint{
+      margin-top: 10px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /* The "Yes" screen */
+    .hidden{ display: none; }
+
+    .message{
+      margin-top: 12px;
+      font-size: clamp(15px, 3.8vw, 19px);
+      line-height: 1.45;
+      padding: 10px 6px 0;
+    }
+
+    #yes {
+      width: 100px;
+      height: 50px;
+      background-color: green;
+      color: white;
+      text-align: center;
+      line-height: 50px;
+      font-size: 20px;
+      transition: width 0.5s, height 0.5s;
+    }
+    #no {
+      width: 100px;
+      height: 50px;
+      background-color: red;
+      color: white;
+      text-align: center;
+      line-height: 50px;
+      position: absolute;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div id="questionScreen">
+      <h1>Will you be my Valentine?</h1>
+      <p>(There is only one correct answer 😄)</p>
+
+      <div class="buttons">
+        <button id="yesBtn" type="button">Yes 💘</button>
+        <button id="noBtn" type="button" aria-label="No">No</button>
+      </div>
+
+      <div class="hint">Tip: try tapping “No”… if you can.</div>
+    </div>
+
+    <div id="yesScreen" class="hidden">
+      <h1>Yessss! 🥰</h1>
+      <div class="message" id="finalMessage">
+        <!-- Placeholder: we’ll write this properly later -->
+        You are my best friend, my rock, and the love of my life. I can’t wait to make more memories together and see where our journey takes us. Thank you for being you, and for being mine.  love you more than words. Happy Valentine’s Day ❤️ 
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---- Config: replace these file names with your images ----
+    const BG_START = "us.jpg";       // your normal photo
+    const BG_WEDDING = "wedding.jpg"; // wedding photo
+
+    // ---- Elements ----
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const questionScreen = document.getElementById("questionScreen");
+    const yesScreen = document.getElementById("yesScreen");
+    const finalMessage = document.getElementById("finalMessage");
+
+    // ---- State ----
+    let yesScale = 1;
+    const scaleStep = 0.8;      // how much "Yes" grows each dodge
+    const maxScale = 15;        // safety cap so it doesn't get ridiculous (tweak if you want)
+    let noIsAbsolute = false;
+    let moveCount = 0;
+
+    // Make sure the starting background is applied (in case you rename files)
+    document.body.style.backgroundImage = `url("${BG_START}")`;
+
+    // Helper: clamp value to range
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+    function getSafeRect(el) {
+    const rect = el.getBoundingClientRect();
+    return {
+        left: rect.left || window.innerWidth / 2,
+        top: rect.top || window.innerHeight / 2,
+        width: rect.width,
+        height: rect.height
+    };
+    }
+
+    function ensureNoAbsolutePositioning() {
+        if (noIsAbsolute) return;
+
+        const rect = getSafeRect(noBtn);
+
+        noBtn.style.position = "fixed";
+        noBtn.style.left = rect.left + "px";
+        noBtn.style.top = rect.top + "px";
+        noBtn.style.zIndex = "9999";
+
+        noIsAbsolute = true;
+    }
+
+
+    function moveNoSomewhereElse() {
+      ensureNoAbsolutePositioning();
+
+      // Large safety margin to ensure button stays visible
+      const safetyMargin = 80;
+      
+      // Fixed button dimensions based on CSS
+      const btnWidth = 130;
+      const btnHeight = 50;
+
+      // Get actual viewport dimensions
+      const maxScreenX = window.innerWidth;
+      const maxScreenY = window.innerHeight;
+
+      // Calculate bounds with safety margin
+      const minX = safetyMargin;
+      const maxX = maxScreenX - btnWidth - safetyMargin;
+      const minY = safetyMargin;
+      const maxY = maxScreenY - btnHeight - safetyMargin;
+
+      // Ensure valid range (if button doesn't fit, center it)
+      const validMaxX = Math.max(minX, maxX);
+      const validMaxY = Math.max(minY, maxY);
+
+      // Generate random position within safe bounds
+      const x = Math.random() * (validMaxX - minX) + minX;
+      const y = Math.random() * (validMaxY - minY) + minY;
+
+      // Apply position with final clamp as failsafe
+      const finalX = clamp(x, minX, validMaxX);
+      const finalY = clamp(y, minY, validMaxY);
+
+      noBtn.style.left = finalX + "px";
+      noBtn.style.top = finalY + "px";
+
+      // Grow the Yes button
+      yesScale = Math.min(maxScale, yesScale + scaleStep);
+      yesBtn.style.setProperty("--yes-scale", yesScale.toFixed(2));
+      yesBtn.style.transform = `scale(${yesScale.toFixed(2)})`;
+    }
+
+    // Desktop: hover
+    noBtn.addEventListener("mouseover", (e) => {
+      moveNoSomewhereElse();
+    });
+
+    // Mobile: dodge when finger comes near / taps - prevent duplicate triggers
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      moveNoSomewhereElse();
+    }, { passive: false });
+
+    // Block click to prevent it from firing after touch
+    noBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    // Yes button: success screen + swap background
+    yesBtn.addEventListener("click", () => {
+      // Swap background
+      document.body.style.backgroundImage = `url("${BG_WEDDING}")`;
+
+      // Swap UI
+      questionScreen.classList.add("hidden");
+      yesScreen.classList.remove("hidden");
+
+      // Placeholder message (we'll improve later)
+      finalMessage.innerHTML = "You are my best friend, my rock, and the love of my life. I can't wait to make more memories together and see where our journey takes us. Thank you for being you, and for being mine.<br><br>I love you more than words. Happy Valentine's Day ❤️";
+    });
+
+    // Keep the No button on-screen on orientation change / resize
+    window.addEventListener("resize", () => {
+      if (noIsAbsolute) moveNoSomewhereElse();
+    });
+
+    // Track how many times user tries to click/tap No
+    let noDodgeCount = 0;
+    const maxDodges = 10;
+
+    // Wrap the original moveNoSomewhereElse to track count
+    const originalMove = moveNoSomewhereElse;
+    moveNoSomewhereElse = function() {
+      noDodgeCount++;
+      originalMove();
+      
+      if (noDodgeCount >= maxDodges) {
+        // After 10 dodges, disable the No button and show a message
+        noBtn.style.pointerEvents = "none";
+        noBtn.textContent = "You got me! 😄";
+      }
+    };
+  </script>
+</body>
+</html>
